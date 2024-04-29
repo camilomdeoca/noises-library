@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "target": "ES2022",
     "declaration": true,
     "lib": ["ESNext"]
