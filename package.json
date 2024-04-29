@@ -1,0 +1,29 @@
+{
+  "name": "noises-library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camilomdeoca/noises-library.git"
+  },
+  "author": "Camilo Montes de Oca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/camilomdeoca/noises-library/issues"
+  },
+  "homepage": "https://github.com/camilomdeoca/noises-library#readme",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "vectors-typescript": "github:camilomdeoca/vectors-typescript"
+  }
+}
