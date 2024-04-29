@@ -1,4 +1,4 @@
-import { Perlin } from './perlin';
+import { Perlin } from './perlin.js';
 
 export { Perlin };
 
