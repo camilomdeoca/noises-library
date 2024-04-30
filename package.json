@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx nodemon --watch test/server.js test/server.js & tsc -w & npx nodemon -e ts,js --ignore test/bundle.js --ignore src/ --exec \"npx esbuild test/test.js --bundle --outfile=test/bundle.js\""
   },
   "repository": {
     "type": "git",
@@ -21,9 +21,13 @@
   },
   "homepage": "https://github.com/camilomdeoca/noises-library#readme",
   "devDependencies": {
+    "esbuild": "^0.20.2",
+    "nodemon": "^3.1.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@types/seedrandom": "^3.0.8",
+    "seedrandom": "^3.0.5",
     "vectors-typescript": "github:camilomdeoca/vectors-typescript"
   }
 }

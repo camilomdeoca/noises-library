@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>Perlin noise</title>
+<style>
+.centerbox {
+  /* flexbox, por favor */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+
+  width: 100%;
+  height: 100%;
+  margin: 0; padding: 0;
+}
+body, html { width: 100%; height: 100%; padding: 0; margin: 0; }
+canvas {
+  /* border-radius: 30px;  Border radiuses don't seem to work with putImageData */
+  box-shadow: 0 0 10px #777;
+  width: 512px;
+  height: 512px;
+}
+body {
+  background-color: #eee;
+}
+</style>
+<script defer>
+const ws = new WebSocket("ws://localhost:3000");
+
+ws.addEventListener('open', () => {
+  console.log("connected");
+});
+
+ws.addEventListener('message', () => {
+  console.log("change");
+  location.reload();
+});
+</script>
+<script type="module" src='bundle.js' defer></script>
+<div class='centerbox'><canvas></canvas></div>
