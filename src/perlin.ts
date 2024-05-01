@@ -51,12 +51,22 @@ export class Perlin {
     138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
   ];
 
-  private static readonly gradients: Vector2[] = [
-    new Vector2(0, 1), new Vector2(0, -1),
-    new Vector2(1, 0), new Vector2(-1, 0),
-    new Vector2(SQRT_OF_2, SQRT_OF_2), new Vector2(-SQRT_OF_2, -SQRT_OF_2),
-    new Vector2(SQRT_OF_2, -SQRT_OF_2), new Vector2(-SQRT_OF_2, SQRT_OF_2)
-  ];
+  //private static readonly gradients: Vector2[] = [
+  //  new Vector2(0, 1), new Vector2(0, -1),
+  //  new Vector2(1, 0), new Vector2(-1, 0),
+  //  new Vector2(SQRT_OF_2, SQRT_OF_2), new Vector2(-SQRT_OF_2, -SQRT_OF_2),
+  //  new Vector2(SQRT_OF_2, -SQRT_OF_2), new Vector2(-SQRT_OF_2, SQRT_OF_2)
+  //];
+  private static readonly gradients: Vector2[] = (() => {
+    const numOfGradients = 16;
+    const gradients = new Array(numOfGradients);
+    for (let i = 0; i < numOfGradients; i++)
+    {
+      let angle = (i / numOfGradients) * Math.PI * 2;
+      gradients[i] = new Vector2(Math.cos(angle), Math.sin(angle));
+    }
+    return gradients;
+  })();
 
   // the number of unique gradients on a side (the last one is equal to the first)
   private gridSizeForOctaveIndex(index: number): number
