@@ -1,8 +1,6 @@
 import { Vector2 } from 'vectors-typescript';
 import seedrandom from 'seedrandom';
 
-const SQRT_OF_2 = Math.sqrt(2);
-
 export class Perlin {
   private octaveWeights: number[];
   private seededPermutation: number[]; // Seeded permutation
@@ -10,7 +8,7 @@ export class Perlin {
 
   constructor(
     octavesWeights: number[],
-    seed?: number,
+    seed?: string,
     options?: {
       scale?: Vector2;
     }
@@ -19,7 +17,7 @@ export class Perlin {
     this.scale = options?.scale || new Vector2(1, 1);
     if (seed != undefined)
     {
-      let rng = seedrandom.alea(seed.toString());
+      let rng = seedrandom.alea(seed);
       let perm = [...Perlin.permutation];
       this.seededPermutation = [];
       while (perm.length > 0)

@@ -18,7 +18,7 @@ for (let i = 0; i < 12; i++) {
 //console.log(weights);
 
 const createPerlinStart = Date.now();
-let perlin = new Perlin(weights, Math.random(), {
+let perlin = new Perlin(weights, Math.random().toString(), {
   scale: new Vector2(1, 1)
 });
 console.log("creating Perlin noise object took " + (Date.now() - createPerlinStart) + "ms");
