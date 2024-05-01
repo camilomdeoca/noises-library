@@ -11,9 +11,12 @@ export class Perlin {
   constructor(
     octavesWeights: number[],
     seed?: number,
-    options?: any
+    options?: {
+      scale?: Vector2;
+    }
   ) {
     this.octaveWeights = octavesWeights;
+    this.scale = options?.scale || new Vector2(1, 1);
     if (seed != undefined)
     {
       let rng = seedrandom.alea(seed.toString());
@@ -74,9 +77,10 @@ export class Perlin {
         continue;
 
       const gridSize = this.gridSizeForOctaveIndex(octaveIndex);
+      const gridSizeScaled = new Vector2(gridSize*this.scale.x, gridSize*this.scale.y);
 
       // x, y from 0 to gridSize
-      let inGridPos = new Vector2(position.x * gridSize, position.y * gridSize);
+      let inGridPos = new Vector2(position.x * gridSizeScaled.x, position.y * gridSizeScaled.y);
 
       let x0 = Math.floor(inGridPos.x);
       let y0 = Math.floor(inGridPos.y);
@@ -89,7 +93,7 @@ export class Perlin {
       let n0: number, n1: number, ix0: number, ix1: number;
 
       let dotGridGradient = (ix: number, iy: number, x: number, y:number): number => {
-        const gradient = Perlin.gradients[this.hash(ix % gridSize, iy % gridSize) % Perlin.gradients.length];
+        const gradient = Perlin.gradients[this.hash(ix % gridSizeScaled.x, iy % gridSizeScaled.y) % Perlin.gradients.length];
         const delta = new Vector2(x - ix, y - iy);
         return Vector2.dot(gradient, delta);
       }
