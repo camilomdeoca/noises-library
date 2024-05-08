@@ -13,7 +13,11 @@ export class Perlin {
       scale?: Vector2;
     }
   ) {
-    this.octaveWeights = octavesWeights;
+    this.octaveWeights = [...octavesWeights];
+    // Make weights sum 1
+    const modulo = this.octaveWeights.reduce((sum, elem) => sum + elem, 0) / this.octaveWeights.length;
+    this.octaveWeights.forEach((_, index) => this.octaveWeights[index] /= modulo);
+
     this.scale = options?.scale || new Vector2(1, 1);
     if (seed != undefined)
     {
