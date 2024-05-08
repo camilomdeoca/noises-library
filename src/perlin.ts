@@ -122,8 +122,7 @@ export class Perlin {
       n1 = dotGridGradient(x1, y1, inGridPos.x, inGridPos.y);
       ix1 = interpolate(n0, n1, sx);
 
-      const contrast = 1.2;
-      let value = interpolate(ix0, ix1, sy) * this.octaveWeights[octaveIndex] * contrast;
+      let value = interpolate(ix0, ix1, sy) * this.octaveWeights[octaveIndex];
       if (value > 1) value = 1;
       if (value < -1) value = -1;
       intensity += value;
