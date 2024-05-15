@@ -19,12 +19,13 @@ for (let i = 0; i < 12; i++) {
 //console.log(weights);
 
 const createPerlinStart = Date.now();
-let perlin = new Perlin(weights, Math.random().toString(), {
+let perlin = new Perlin({
+  octavesWeights: weights,
+  seed: Math.random().toString(),
   scale: new Vector2(1, 1),
 });
 let worley = new Worley({
   numPoints: 100,
-  seed: "dawda",
   pointGenAlgorithm: "hammersley",
 });
 console.log("creating Perlin noise object took " + (Date.now() - createPerlinStart) + "ms");

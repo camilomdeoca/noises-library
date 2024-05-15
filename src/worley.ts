@@ -27,11 +27,10 @@ export class Worley {
       pointGenAlgorithm?: PointGenerationAlgorithm;
     },
   ) {
-    if (options !== undefined) {
-      this.seed = options.seed !== undefined ? options.seed : DEFAULT_WORLEY_NOISE_SEED;
-      this.numPoints = options.numPoints !== undefined ? options.numPoints : DEFAULT_WORLEY_NOISE_NUM_POINTS;
-      this.pointGenAlgorithm = options.pointGenAlgorithm !== undefined ? options.pointGenAlgorithm : DEFAULT_POINT_GENERATION_ALGORITHM;
-    }
+    this.seed = options?.seed ?? DEFAULT_WORLEY_NOISE_SEED;
+    this.numPoints = options?.numPoints ?? DEFAULT_WORLEY_NOISE_NUM_POINTS;
+    this.pointGenAlgorithm = options?.pointGenAlgorithm ?? DEFAULT_POINT_GENERATION_ALGORITHM;
+
     if (this.pointGenAlgorithm == "random")
       this.generateRandomPoints();
     else if (this.pointGenAlgorithm == "halton")
