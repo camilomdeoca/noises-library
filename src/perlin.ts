@@ -1,17 +1,21 @@
 import { Vector2 } from 'vectors-typescript';
 import seedrandom from 'seedrandom';
 
-const DEFAULT_PERLIN_NOISE_WEIGHTS: number[] = [0, 0, 0, 1, 0.5, 0.25, 0.125, 0.0625];
+const DEFAULT_PERLIN_NOISE_STARTING_OCTAVE_INDEX: number = 4;
+const DEFAULT_PERLIN_NOISE_WEIGHTS: number[] = [1, 0.5, 0.25, 0.125, 0.0625];
 
 export class Perlin {
   public constructor(
     options?: {
+      startingOctaveIndex?: number,
       octavesWeights?: number[],
       seed?: string,
       scale?: Vector2;
     }
   ) {
+    this._startingOctaveIndex = options?.startingOctaveIndex ?? DEFAULT_PERLIN_NOISE_STARTING_OCTAVE_INDEX;
     this._octaveWeights = options?.octavesWeights !== undefined ? [...options.octavesWeights] : DEFAULT_PERLIN_NOISE_WEIGHTS;
+
     // Make weights sum 1
     const sum = this._octaveWeights.reduce((sum, elem) => sum + elem, 0);
     this._octaveWeights.forEach((_, index) => this._octaveWeights[index] /= sum);
@@ -81,9 +85,9 @@ export class Perlin {
 
   public at(position: Vector2): number {
     let intensity = 0;
-    for (let octaveIndex = 0; octaveIndex < this._octaveWeights.length; octaveIndex++)
+    for (let octaveIndex = this._startingOctaveIndex; octaveIndex - this._startingOctaveIndex < this._octaveWeights.length; octaveIndex++)
     {
-      if (this._octaveWeights[octaveIndex] === 0)
+      if (this._octaveWeights[octaveIndex - this._startingOctaveIndex] === 0)
         continue;
 
       const gridSize = this.gridSizeForOctaveIndex(octaveIndex);
@@ -120,7 +124,7 @@ export class Perlin {
       n1 = dotGridGradient(x1, y1, inGridPos.x, inGridPos.y);
       ix1 = interpolate(n0, n1, sx);
 
-      let value = interpolate(ix0, ix1, sy) * this._octaveWeights[octaveIndex];
+      let value = interpolate(ix0, ix1, sy) * this._octaveWeights[octaveIndex - this._startingOctaveIndex];
       if (value > 1) value = 1;
       if (value < -1) value = -1;
       intensity += value;
@@ -128,6 +132,7 @@ export class Perlin {
     return (intensity + 1) * 0.5;
   }
 
+  private _startingOctaveIndex: number;
   private _octaveWeights: number[];
   private _seededPermutation: number[]; // Seeded permutation
   private _scale: Vector2; // Scale in x and in y
