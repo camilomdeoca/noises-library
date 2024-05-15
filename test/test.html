@@ -4,12 +4,12 @@
 .centerbox {
   /* flexbox, por favor */
   display: -webkit-box;
-  -webkit-box-orient: horizontal;
+  -webkit-box-orient: vertical;
   -webkit-box-pack: center;
   -webkit-box-align: center;
 
   display: -moz-box;
-  -moz-box-orient: horizontal;
+  -moz-box-orient: vertical;
   -moz-box-pack: center;
   -moz-box-align: center;
 
@@ -27,6 +27,10 @@ canvas {
 body {
   background-color: #eee;
 }
+.log {
+  font-family: sans-serif;
+  margin: 0;
+}
 </style>
 <script defer>
 const ws = new WebSocket("ws://localhost:3000");
@@ -41,4 +45,7 @@ ws.addEventListener('message', () => {
 });
 </script>
 <script type="module" src='bundle.js' defer></script>
-<div class='centerbox'><canvas></canvas></div>
+<div class='centerbox'>
+  <canvas></canvas>
+  <p class='log'></p>
+</div>
