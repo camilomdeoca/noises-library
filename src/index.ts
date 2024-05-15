@@ -1,5 +1,5 @@
 import { Perlin } from './perlin.js';
-import { Worley } from './worley.js';
+import { Worley, PointGenerationAlgorithm } from './worley.js';
 
-export { Perlin, Worley };
+export { Perlin, Worley, PointGenerationAlgorithm };
 

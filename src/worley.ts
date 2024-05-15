@@ -13,7 +13,7 @@ const halton = (index: number, base: number): number => {
   return result;
 };
 
-type PointGenerationAlgorithm = "random" | "halton" | "hammersley";
+export type PointGenerationAlgorithm = "random" | "halton" | "hammersley";
 
 const DEFAULT_WORLEY_NOISE_NUM_POINTS: number = 100;
 const DEFAULT_WORLEY_NOISE_SEED: string = "defaultseed";
