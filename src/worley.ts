@@ -96,9 +96,9 @@ export class Worley {
     const igridSpacePos = new Vector2(Math.floor(gridSpacePos.x), Math.floor(gridSpacePos.y));
     let closestPoints: Vector2[] = [];
     for (let yOffset = -1; yOffset <= 1; yOffset++) {
-      const y = (side + igridSpacePos.y + yOffset) % side;
+      const y = (side + ((igridSpacePos.y + yOffset) % side)) % side;
       for (let xOffset = -1; xOffset <= 1; xOffset++) {
-        const x = (side + igridSpacePos.x + xOffset) % side;
+        const x = (side + ((igridSpacePos.x + xOffset) % side)) % side;
         for (let point of this.dots[y][x]) {
           closestPoints.push(Vector2.add(new Vector2(igridSpacePos.x + xOffset, igridSpacePos.y + yOffset), point));
         }
