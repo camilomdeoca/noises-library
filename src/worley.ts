@@ -13,12 +13,12 @@ const halton = (index: number, base: number): number => {
   return result;
 };
 
-export type PointGenerationAlgorithm = "random" | "halton" | "hammersley";
+export type WorleyPointGenerationAlgorithm = "random" | "halton" | "hammersley";
 export type WorleyPointSelectionCriteria = "closest" | "second-closest" | "second-minus-closest";
 
 const DEFAULT_WORLEY_NOISE_NUM_POINTS: number = 100;
 const DEFAULT_WORLEY_NOISE_SEED: string = "defaultseed";
-const DEFAULT_POINT_GENERATION_ALGORITHM: PointGenerationAlgorithm = "random";
+const DEFAULT_POINT_GENERATION_ALGORITHM: WorleyPointGenerationAlgorithm = "random";
 const DEFAULT_POINT_SELECTION_CRITERIA: WorleyPointSelectionCriteria = "closest";
 
 export class Worley {
@@ -26,7 +26,7 @@ export class Worley {
     options?: {
       seed?: string,
       numPoints?: number,
-      pointGenAlgorithm?: PointGenerationAlgorithm,
+      pointGenAlgorithm?: WorleyPointGenerationAlgorithm,
       pointSelectionCriteria?: WorleyPointSelectionCriteria,
     },
   ) {
@@ -175,7 +175,7 @@ export class Worley {
   private _numPoints: number;
   private _dots: Vector2[][][]; // positions in their cell
   private _seed: string;
-  private _pointGenAlgorithm: PointGenerationAlgorithm;
+  private _pointGenAlgorithm: WorleyPointGenerationAlgorithm;
   private _pointSelectionCriteria: WorleyPointSelectionCriteria;
   private _pointSelectionFunction: (gridSpacePos: Vector2, closestPoints: Vector2[]) => number = undefined;
 };
