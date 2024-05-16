@@ -22,7 +22,7 @@ const createPerlinStart = Date.now();
 let perlin = new Perlin({
   startingOctaveIndex: 2,
   octavesWeights: weights,
-  seed: Math.random().toString(),
+  seed: "seed",
   scale: new Vector2(1, 1),
 });
 let worley = new Worley({
@@ -34,7 +34,7 @@ console.log("creating Perlin noise object took " + (Date.now() - createPerlinSta
 const startSamplingPerlinNoise = Date.now();
 for (let y = 0; y < canvas.height; y++) {
   for (let x = 0; x < canvas.width; x++) {
-    const value = perlin.at(new Vector2(x / canvas.width, y / canvas.height)) * 255;
+    const value = perlin.at(new Vector2((x / canvas.width) * 2 - 1, (y / canvas.height) * 2 - 1)) * 255;
     //const value = worley.at(new Vector2(x / canvas.width, y / canvas.height)) * 255;
 
     data[(y * canvas.width + x) * 4 + 0] = value;

@@ -107,7 +107,12 @@ export class Perlin {
       let n0: number, n1: number, ix0: number, ix1: number;
 
       let dotGridGradient = (ix: number, iy: number, x: number, y:number): number => {
-        const gradient = Perlin.gradients[this.hash(ix % gridSizeScaled.x, iy % gridSizeScaled.y) % Perlin.gradients.length];
+        // calculate the hash of the integer coords ix, iy wrapping them in range [0, gridSize]
+        const hash = this.hash(
+          (gridSizeScaled.x + (ix % gridSizeScaled.x)) % gridSizeScaled.x,
+          (gridSizeScaled.y + (iy % gridSizeScaled.y)) % gridSizeScaled.y
+        );
+        const gradient = Perlin.gradients[hash % Perlin.gradients.length];
         const delta = new Vector2(x - ix, y - iy);
         return Vector2.dot(gradient, delta);
       }
