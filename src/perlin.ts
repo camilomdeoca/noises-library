@@ -91,10 +91,13 @@ export class Perlin {
         continue;
 
       const gridSize = this.gridSizeForOctaveIndex(octaveIndex);
-      const gridSizeScaled = new Vector2(gridSize*this._scale.x, gridSize*this._scale.y);
+      const gridSizeScaled = new Vector2(Math.ceil(gridSize*this._scale.x), Math.ceil(gridSize*this._scale.y));
 
       // x, y from 0 to gridSize
-      let inGridPos = new Vector2(position.x * gridSizeScaled.x, position.y * gridSizeScaled.y);
+      let inGridPos = new Vector2(
+        position.x * gridSize * this._scale.x,
+        position.y * gridSize * this._scale.y
+      );
 
       let x0 = Math.floor(inGridPos.x);
       let y0 = Math.floor(inGridPos.y);
@@ -108,6 +111,7 @@ export class Perlin {
 
       let dotGridGradient = (ix: number, iy: number, x: number, y:number): number => {
         // calculate the hash of the integer coords ix, iy wrapping them in range [0, gridSize]
+        // so sampling with x and y in [0, 2] makes it 4 tiles
         const hash = this.hash(
           (gridSizeScaled.x + (ix % gridSizeScaled.x)) % gridSizeScaled.x,
           (gridSizeScaled.y + (iy % gridSizeScaled.y)) % gridSizeScaled.y
