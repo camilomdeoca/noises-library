@@ -44,6 +44,7 @@ export class Worley {
     this._pointGenAlgorithm = options?.pointGenAlgorithm ?? DEFAULT_POINT_GENERATION_ALGORITHM;
     this._pointSelectionCriteria = options?.pointSelectionCriteria ?? DEFAULT_POINT_SELECTION_CRITERIA;
 
+    console.log("pointgenalgorithm", this._pointGenAlgorithm);
     switch (this._pointGenAlgorithm) {
       case WorleyPointGenerationAlgorithm.Random:
         this.generateRandomPoints();
@@ -53,7 +54,9 @@ export class Worley {
         break;
       case WorleyPointGenerationAlgorithm.Hammersley:
         this.generateHammersleyPoints();
-        break
+        break;
+      default:
+        throw new Error("Invalid point gen algorithm");
     }
 
     switch (this._pointSelectionCriteria) {
@@ -68,7 +71,9 @@ export class Worley {
       case WorleyPointSelectionCriteria.SecondMinusClosest:
         this._pointSelectionFunction = this.distanceToSecondClosestMinusDistanceToClosest;
         this._pointSearchRadius = 2;
-        break
+        break;
+      default:
+        throw new Error("Invalid point selection criteria");
     }
   }
 
