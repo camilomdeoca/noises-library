@@ -44,7 +44,6 @@ export class Worley {
     this._pointGenAlgorithm = options?.pointGenAlgorithm ?? DEFAULT_POINT_GENERATION_ALGORITHM;
     this._pointSelectionCriteria = options?.pointSelectionCriteria ?? DEFAULT_POINT_SELECTION_CRITERIA;
 
-    console.log("pointgenalgorithm", this._pointGenAlgorithm);
     switch (this._pointGenAlgorithm) {
       case WorleyPointGenerationAlgorithm.Random:
         this.generateRandomPoints();
