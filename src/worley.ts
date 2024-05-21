@@ -13,13 +13,22 @@ const halton = (index: number, base: number): number => {
   return result;
 };
 
-export type WorleyPointGenerationAlgorithm = "random" | "halton" | "hammersley";
-export type WorleyPointSelectionCriteria = "closest" | "second-closest" | "second-minus-closest";
+export enum WorleyPointGenerationAlgorithm {
+  Random,
+  Halton,
+  Hammersley,
+}
+
+export enum WorleyPointSelectionCriteria {
+  Closest,
+  SecondClosest,
+  SecondMinusClosest,
+}
 
 const DEFAULT_WORLEY_NOISE_NUM_POINTS: number = 100;
 const DEFAULT_WORLEY_NOISE_SEED: string = "defaultseed";
-const DEFAULT_POINT_GENERATION_ALGORITHM: WorleyPointGenerationAlgorithm = "random";
-const DEFAULT_POINT_SELECTION_CRITERIA: WorleyPointSelectionCriteria = "closest";
+const DEFAULT_POINT_GENERATION_ALGORITHM: WorleyPointGenerationAlgorithm = WorleyPointGenerationAlgorithm.Random;
+const DEFAULT_POINT_SELECTION_CRITERIA: WorleyPointSelectionCriteria = WorleyPointSelectionCriteria.Closest;
 
 export class Worley {
   public constructor(
@@ -35,19 +44,31 @@ export class Worley {
     this._pointGenAlgorithm = options?.pointGenAlgorithm ?? DEFAULT_POINT_GENERATION_ALGORITHM;
     this._pointSelectionCriteria = options?.pointSelectionCriteria ?? DEFAULT_POINT_SELECTION_CRITERIA;
 
-    if (this._pointGenAlgorithm == "random")
-      this.generateRandomPoints();
-    else if (this._pointGenAlgorithm == "halton")
-      this.generateHaltonPoints();
-    else if (this._pointGenAlgorithm == "hammersley")
-      this.generateHammersleyPoints();
+    switch (this._pointGenAlgorithm) {
+      case WorleyPointGenerationAlgorithm.Random:
+        this.generateRandomPoints();
+        break;
+      case WorleyPointGenerationAlgorithm.Halton:
+        this.generateHaltonPoints();
+        break;
+      case WorleyPointGenerationAlgorithm.Hammersley:
+        this.generateHammersleyPoints();
+        break
+    }
 
-    if (this._pointSelectionCriteria === "closest") {
-      this._pointSelectionFunction = this.distanceToClosest;
-    } else if (this._pointSelectionCriteria === "second-closest") {
-      this._pointSelectionFunction = this.distanceToSecondClosest;
-    } else if (this._pointSelectionCriteria === "second-minus-closest") {
-      this._pointSelectionFunction = this.distanceToSecondClosestMinusDistanceToClosest;
+    switch (this._pointSelectionCriteria) {
+      case WorleyPointSelectionCriteria.Closest:
+        this._pointSelectionFunction = this.distanceToClosest;
+        this._pointSearchRadius = 1;
+        break;
+      case WorleyPointSelectionCriteria.SecondClosest:
+        this._pointSelectionFunction = this.distanceToSecondClosest;
+        this._pointSearchRadius = 2;
+        break;
+      case WorleyPointSelectionCriteria.SecondMinusClosest:
+        this._pointSelectionFunction = this.distanceToSecondClosestMinusDistanceToClosest;
+        this._pointSearchRadius = 2;
+        break
     }
   }
 
@@ -107,16 +128,10 @@ export class Worley {
     const gridSpacePos = new Vector2(position.x * side, position.y * side);
     const igridSpacePos = new Vector2(Math.floor(gridSpacePos.x), Math.floor(gridSpacePos.y));
 
-    let searchRadious: number;
-    if (this._pointSelectionCriteria === "closest")
-      searchRadious = 1;
-    else if (this._pointSelectionCriteria === "second-closest" || this._pointSelectionCriteria === "second-minus-closest")
-      searchRadious = 2;
-
     let closestPoints: Vector2[] = [];
-    for (let yOffset = -searchRadious; yOffset <= searchRadious; yOffset++) {
+    for (let yOffset = -this._pointSearchRadius; yOffset <= this._pointSearchRadius; yOffset++) {
       const y = (side + ((igridSpacePos.y + yOffset) % side)) % side;
-      for (let xOffset = -searchRadious; xOffset <= searchRadious; xOffset++) {
+      for (let xOffset = -this._pointSearchRadius; xOffset <= this._pointSearchRadius; xOffset++) {
         const x = (side + ((igridSpacePos.x + xOffset) % side)) % side;
         for (let point of this._dots[y][x]) {
           closestPoints.push(Vector2.add(new Vector2(igridSpacePos.x + xOffset, igridSpacePos.y + yOffset), point));
@@ -177,5 +192,6 @@ export class Worley {
   private _seed: string;
   private _pointGenAlgorithm: WorleyPointGenerationAlgorithm;
   private _pointSelectionCriteria: WorleyPointSelectionCriteria;
+  private _pointSearchRadius: number;
   private _pointSelectionFunction: (gridSpacePos: Vector2, closestPoints: Vector2[]) => number = undefined;
 };
